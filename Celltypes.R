@@ -43,8 +43,8 @@ markers %<>% split(., .$cluster)
 
 save(scDown, file = file.path(projDir, "GSE159677.RData"))
 
-head(markers[[5]], 10)
 
+#Find cell types based on common marker genes
 #T cells: Clusters 0, 2, 15
 VlnPlot(scDown, features = c("CD2", "CD3E", "CD3D", "CD4", "CD8A"))
 
@@ -59,7 +59,6 @@ scTc %<>% RunUMAP(., dims = 1:12)
 DimPlot(scTc, reduction = "umap")
 
 #T cell subsets
-#https://onlinelibrary.wiley.com/doi/full/10.1002/cyto.a.23724
 markerGenes <- c("CD4", "CD8A",
                  "CXCR3", "IFNG", "IL2", "TBX21", #Th1
                  "CCR4", "PTGDR2", "IL4", "IL5", "GATA3", #Th2
@@ -67,14 +66,14 @@ markerGenes <- c("CD4", "CD8A",
                  "KLRB1", "CCR6", "IL17A", "RORC", #Th17
                  "IL2RA", "IL10", "FOXP3", #Treg
                  "CCR10", "IL22", "AHR", "FOXO4" #Th22
-) 
+                 ) 
 
 tiff(file.path(figDir, "T_subset_markers.tiff"), width = 10, height = 4, res = 600, units = "in")
 DotPlot(scTc, features = markerGenes) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
 dev.off()
 
-#NKT cells: Clusters 0 (2, 15) - based on CD3, these are T cell-like NTK cells.
+#NKT cells: Clusters 0 (2, 15) - based on CD3, with this clustering NKTs cluster together with T cells and do not form a separate cluster.
 VlnPlot(scDown, features = c("NKG7", "CTSW", "XCL1", "KLRB1", "KLRD1"))
 
 #Macrophages: Clusters 5, 6, 7, 12
@@ -93,14 +92,10 @@ DimPlot(scMc, reduction = "umap")
 
 VlnPlot(scMc, features = c("IL10", "IL12A", "FCGR3A", "FCGR1A", "MRC1", "CD14"))
 
-#celltypes[celltypes %in% c(0, 1, 3, 4, 5, 9, 11, 13)] <- "M2"
-#celltypes[!celltypes %in% c(0, 1, 3, 4, 5, 9, 11, 13)] <- "M1"
-
 m2cells <- colData(scMc) %>% .[.$seurat_clusters %in% c(0, 1, 3, 4, 5, 9, 11, 13), ] %>% rownames()
 m1cells <- colData(scMc) %>% .[!.$seurat_clusters %in% c(0, 1, 3, 4, 5, 9, 11, 13), ] %>% rownames()
 
 #VSMCs: Clusters 3, 8, 9. Modulated: Clusters 8, 9
-#Markers from https://www.ahajournals.org/doi/10.1161/ATVBAHA.121.316600#:~:text=Contractile%20vSMCs%20exhibit%20an%20elongated,%2C%20and%20calponin%20(CNN1).
 VlnPlot(scDown, features = c("ACTA2", "MYH11", "CNN1", "TAGLN"))
 
 tiff(file.path(figDir, "VSMC_markers.tiff"), width = 10, height = 4, res = 600, units = "in")
@@ -121,11 +116,8 @@ VlnPlot(scDown, features = c("CD19", "CD79A", "MS4A1", "IGKC"))
 #Fibroblasts: Cluster 4
 VlnPlot(scDown, features = c("DCN", "MFAP5", "APOD", "PDGFRA"))
 
-#pDCs;
-VlnPlot(scDown, features = c("CLEC4C"))
-
-#pDCs;
-VlnPlot(scDown, features = c("KIT", "MS4A2", "CPA3"))
+#pDCs:
+VlnPlot(scDown, features = c("CLEC4C", "KIT", "MS4A2", "CPA3"))
 
 
 #Assign identities
@@ -164,6 +156,7 @@ scDown$SubType[rownames(colData(scDown)) %in% m1cells] <- "M1"
 scDown$SubType[rownames(colData(scDown)) %in% m2cells] <- "M2"
 rm(scMc, m1cells, m2cells, subtypes, celltypes)
 
+
 #Celltypes by area
 tiff(file.path(figDir, "UMAP_CellTypes.tiff"), width = 6, height = 4, res = 600, units = "in")
 DimPlot(scDown, reduction = "umap", label = TRUE, pt.size = 0.5) +
@@ -181,6 +174,7 @@ ggpubr::ggarrange(plotlist = list(DimPlot(subset(scDown, subset = Area == "PA"),
 )
 )
 
+#Subtypes by area
 Idents(scDown) <- scDown$SubType
 
 tiff(file.path(figDir, "UMAP_Subypes_&_Area.tiff"), width = 15, height = 4, res = 600, units = "in")
@@ -188,6 +182,7 @@ ggpubr::ggarrange(plotlist = list(DimPlot(scDown, reduction = "umap", label = TR
                                   DimPlot(scDown, reduction = "umap", group.by = "Area", cols = c(rgb(248, 118, 109, maxColorValue = 255), rgb(7, 137, 146, maxColorValue = 255))))
 )
 dev.off()
+
 
 #Markers in all cell types
 tiff(file.path(figDir, "UMAP_Celltype_Markers.tiff"), width = 12, height = 4, res = 600, units = "in")
@@ -203,7 +198,8 @@ DotPlot(scDown, features = c("NKG7", "CTSW", "XCL1", "KLRB1", "KLRD1",
   theme(axis.text.x = element_text(angle = 40, hjust = 1))
 dev.off()
 
-#What are the proportion of different cells in PA and AC?
+
+#What are the proportions of different cells in PA and AC?
 cellData <- colData(scDown) %>% .[, c("Area", "SubType")] %>% table() %>%
   as.data.frame()
 cellData$Area %<>% factor(., levels = c("PA", "AC"))
@@ -230,4 +226,3 @@ openxlsx::addWorksheet(wb, "Subtype_frequencies")
 openxlsx::writeData(wb, 1, cellData, startRow = 1, startCol = 1, colNames = TRUE, rowNames = FALSE)
 openxlsx::saveWorkbook(wb, file.path(dataDir, "Subtype_frequencies.xlsx"), TRUE)
 rm(wb, cellData)
-

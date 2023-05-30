@@ -28,11 +28,8 @@ scData[["percent.mt"]] <- PercentageFeatureSet(scData, pattern = "^MT-")
 
 VlnPlot(scData, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 
-qcPlots <- ggpubr::ggarrange(plotlist = list(FeatureScatter(scData, feature1 = "nCount_RNA", feature2 = "percent.mt"),
-                                  FeatureScatter(scData, feature1 = "nCount_RNA", feature2 = "nFeature_RNA"))
-                             )
-qcPlots <- FeatureScatter(scData, feature1 = "nCount_RNA", feature2 = "percent.mt")
-save(qcPlots, file = file.path(figDir, "qcPlots.RData"))
+FeatureScatter(scData, feature1 = "nCount_RNA", feature2 = "percent.mt")
+FeatureScatter(scData, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 
 #Filter out cells with more then 5% mitochondrial genes
 scData %<>% subset(., subset = nFeature_RNA > 200 & nFeature_RNA < 6000 & percent.mt < 5)

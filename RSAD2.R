@@ -72,7 +72,7 @@ sumMeta <- dplyr::group_by_at(colData(scDown), c("Area", "CellType", "RSADness")
   dplyr::summarise(n = dplyr::n()) %>%
   dplyr::mutate(freq = n / sum(n) * 100)
 
-#No RSAD+ cells were cound in AC for fibroblasts or PA for B cells and pDCs - adding 0s
+#No RSAD+ cells were found in AC for fibroblasts or PA for B cells and pDCs - adding 0s
 sumMeta %<>% rbind(., data.frame(Area = c("PA", "PA", "AC"), CellType = c("B cells", "pDCs", "Fibroblasts"), RSADness = rep("Positive", 3), n = rep(0, 3), freq = rep(0, 3)))
 
 sumMeta$Area %<>% factor(., levels = c("PA", "AC"))
