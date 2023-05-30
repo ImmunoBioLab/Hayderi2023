@@ -13,21 +13,21 @@ described here. Details on the analysis are described below.
 
 <ol>
 <li>
-<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Analysis.R">Functions</span>:
+<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Analysis.R">Functions</a>:
 describes packages and functions necessary for analysis below.
 </li>
 <li>
-<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Analysis.R">Analysis</span>:
+<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Analysis.R">Analysis</a>:
 describes data import, metadata construction, quality control and
 filtering, downsampling and normalization.
 </li>
 <li>
-<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Celltypes.R">Celltypes</span>:
+<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Celltypes.R">Celltypes</a>:
 describes PCA, clustering, cell type and subtype identification, and
 plotting of celltype-related data
 </li>
 <li>
-<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/RSAD2.R">RSAD2</span>:
+<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/RSAD2.R">RSAD2</a>:
 describes labeling of RSAD2+ and RSAD2- cells, their analysis and marker
 gene identification, as well as plotting of data
 </li>
