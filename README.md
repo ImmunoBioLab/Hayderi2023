@@ -13,7 +13,7 @@ described here. Details on the analysis are described below.
 
 <ol>
 <li>
-<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Analysis.R">Functions</a>:
+<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Functions.R">Functions</a>:
 describes packages and functions necessary for analysis below.
 </li>
 <li>
@@ -46,12 +46,11 @@ regulated genes, and PCA was performed. Data was scaled using Seurat
 function ScaleData and Louvain clustering was performed based on 12 top
 PCs with resolution 0.5. Uniform Manifold Approximation and Projection
 (UMAP) was used to visualize clusters. Cell types were assigned based on
-expression of marker genes per cluster (Figure S2). As most cell types
-were assigned to more than one cluster per cell type, cell types were
-further divided into subtypes based on common marker genes. For T cells
-and macrophages, to achieve this cells belonging to these subtypes were
-isolated and separate Louvain clustering was performed, resolution 1.
-Cells with more than 0 RSAD2 UMI were labelled as RSAD2-positive. Seurat
-function FindMarkers was used to identify markers of RSAD2+ and RSAD2-
-cells. Pearson correlation was used to assess correlation between
-expression of RSAD2 and genes of interest.
+expression of marker genes per cluster (Hayderi et al., 202X, Figure
+S2). As most cell types were assigned to more than one cluster per cell
+type, cell types were further divided into subtypes based on common
+marker genes. For T cells and macrophages, to achieve this cells
+belonging to these cell types were isolated and separate Louvain
+clustering was performed, with resolution 1. Cells with more than 0
+RSAD2 UMI were labelled as RSAD2-positive. Seurat function FindMarkers
+was used to identify markers of RSAD2+ and RSAD2- cells.
