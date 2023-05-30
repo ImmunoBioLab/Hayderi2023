@@ -13,7 +13,7 @@ described here. Details on the analysis are described below.
 
 <ol>
 <li>
-<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Analysis.R">Functions</a>:
+<a href="https://github.com/ImmunoBioLab/Hayderi2023/blob/main/Functions.R">Functions</a>:
 describes packages and functions necessary for analysis below.
 </li>
 <li>
