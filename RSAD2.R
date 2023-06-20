@@ -97,17 +97,34 @@ rm(metadata, sumMeta)
 #Characterization of RSAD2+ cells
 Idents(scDown) <- colData(scDown)$RSADness
 
+rsad <- subset(scDown, subset = RSADness == "Positive")
+rsad <- data.frame(RSADness = "Positive",
+                   Area = factor(colData(rsad)$Area, levels = c("PA", "AC")),
+                   RSAD2 = as.vector(rna(rsad) %>% .[rownames(.) == "RSAD2",])
+                   )
+
+tiff(file.path(figDir, "RSAD2_Area.tiff"), width = 4, height = 4, res = 600, units = "in")
+ggplot(data = rsad, mapping = aes(x = Area, y = RSAD2, fill = Area)) +
+  geom_violin(show.legend = FALSE) +
+  geom_boxplot(width = 0.1, size = 1.3, show.legend = FALSE, outlier.colour = NA) +
+  geom_point(size = 1, color = "gray50", alpha = 0.5, show.legend = FALSE, position = position_jitter(height = 0, width = 0.25)) +
+  scale_fill_manual(values = c(rgb(7, 137, 146, maxColorValue = 255), rgb(248, 118, 109, maxColorValue = 255))) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 4)) +
+  ylab("RSAD2 expression level") +
+  theme_classic() +
+  theme(axis.text.x = element_text(size = 16), axis.title.x = element_blank(), axis.line = element_line(size = 0.75),
+        axis.text.y = element_text(size = 12), axis.title.y = element_text(size = 16), legend.title = element_blank(),
+        legend.text = element_text(size = 12)) +
+  geom_pwc(method = "wilcox.test", label = "p = {p}")
+dev.off()
+
+
 #Find markers
 markers <- FindMarkers(scDown, min.pct = 0.25, ident.1 = "Positive", ident.2 = "Negative")
 markers %<>% dplyr::arrange(., desc(avg_log2FC))
 
 DoHeatmap(scDown, group.by = "RSADness", features = rownames(head(markers, 20)))
 VlnPlot(scDown, features = rownames(head(markers, 20)), group.by = "CellTypes")
-
-tiff(file.path(figDir, "RSAD2_Area.tiff"), width = 4, height = 4, res = 600, units = "in")
-subset(scDown, subset = RSADness == "Positive") %>%
-  VlnPlot(., features = c("RSAD2"), split.by = "Area")
-dev.off()
 
 tiff(file.path(figDir, "RSAD2+_markers.tiff"), width = 20, height = 20, res = 600, units = "in")
 VlnPlot(scDown, features = rownames(head(markers, 20)), group.by = "RSADness")

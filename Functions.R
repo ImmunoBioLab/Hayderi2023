@@ -4,6 +4,7 @@ library(magrittr)
 library(stringr)
 library(ggplot2)
 library(pheatmap)
+library(ggpubr)
 
 #Are all instances of vector X present in vector Y?
 setGeneric("%v%", function(x, y) standardGeneric("%v%"))
@@ -15,7 +16,7 @@ setMethod("%v%", signature(x = "vector", y = "list"), function(x, y) {
 })
 
 #Accessors
-setGeneric("rna", function(object, features = NULL) standardGenercic("rna"))
+setGeneric("rna", function(object, features = NULL) standardGeneric("rna"))
 setMethod("rna", signature(object = "Seurat"), function(object, features = NULL) {
   output <- object@assays$RNA
   
@@ -31,7 +32,7 @@ setMethod("rna", signature(object = "Seurat"), function(object, features = NULL)
 
   return(output)
 })
-setGeneric("rna<-", function(x, value) standardGenercic("rna<-"))
+setGeneric("rna<-", function(x, value) standardGeneric("rna<-"))
 setMethod("rna<-", signature(x = "Seurat", value = "matrix"), function(x, value) {
   if(nrow(value) != nrow(x)) {
     warning("Inequality of genes detected!")
@@ -43,7 +44,7 @@ setMethod("rna<-", signature(x = "Seurat", value = "matrix"), function(x, value)
   
   return(x)
 })
-setGeneric("colData", function(object, cells = NULL) standardGenercic("colData"))
+setGeneric("colData", function(object, cells = NULL) standardGeneric("colData"))
 setMethod("colData", signature(object = "Seurat"), function(object, cells = NULL) {
   output <- object@meta.data
   
@@ -59,7 +60,7 @@ setMethod("colData", signature(object = "Seurat"), function(object, cells = NULL
   
   return(output)
 })
-setGeneric("colData<-", function(x, value) standardGenercic("colData<-"))
+setGeneric("colData<-", function(x, value) standardGeneric("colData<-"))
 setMethod("colData<-", signature(x = "Seurat", value = "data.frame"), function(x, value) {
   if(nrow(value) != ncol(x)) {
     warning("Inequality of cells detected!")
