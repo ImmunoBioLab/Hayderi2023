@@ -1,7 +1,7 @@
 ## Overview
 
 This repository contains code for the analysis of single cell RNA seq
-data for the paper “RSAD2 is abundant in atherosclerotic plaques and promotes interferon-induced CXCR3-chemokines in human smooth muscle cells” (<a href="https://www.nature.com/articles/s41598-024-58592-9>Hayderi et al., 2024</a>). The dataset analyzed here
+data for the paper “RSAD2 is abundant in atherosclerotic plaques and promotes interferon-induced CXCR3-chemokines in human smooth muscle cells” (<a href="https://www.nature.com/articles/s41598-024-58592-9">Hayderi et al., 2024</a>). The dataset analyzed here
 was published and described in
 <a href="https://www.nature.com/articles/s42003-022-04056-7">Alsaigh et
 al., 2020</a>
